@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rbNoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="宿主APP未登录" />
+
+        <RadioButton
+            android:id="@+id/rbCompletionLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宿主APP已登录" />
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="#888888" />
+
+    <EditText
+        android:id="@+id/etVenderId"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="请输入店铺ID"
+        android:text="10877803" />
+
+    <Button
+        android:id="@+id/btnOpenShopHomePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="4dp"
+        android:text="跳转店铺首页" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="#888888"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/etSkuId"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="请输入要跳转的SKU"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btnOpenProductDetailsPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跳转商祥页" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnOutLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnOpenShopHomePage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="模拟宿主APP退出登录"
+        android:visibility="visible" />
+</LinearLayout>
