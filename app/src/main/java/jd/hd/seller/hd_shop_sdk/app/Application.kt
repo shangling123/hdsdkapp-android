@@ -1,6 +1,6 @@
 package jd.hd.seller.hd_shop_sdk.app
 
-import androidx.multidex.MultiDexApplication
+import android.support.multidex.MultiDexApplication
 import jd.hd.hd_shop_sdk.HdShopSdk
 
 class Application : MultiDexApplication() {
