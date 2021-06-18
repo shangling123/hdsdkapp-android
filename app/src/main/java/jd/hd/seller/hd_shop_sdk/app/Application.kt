@@ -6,6 +6,6 @@ import jd.hd.hd_shop_sdk.HdShopSdk
 class Application : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
-        HdShopSdk.init(applicationContext, AppConfig.venderId)
+        HdShopSdk.init(applicationContext, AppConfig.clientId, AppConfig.appKey, AppConfig.uniqueKey, AppConfig.venderId)
     }
 }
