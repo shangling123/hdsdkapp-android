@@ -109,3 +109,6 @@
     <init>(java.lang.Throwable);
 }
 
+-keep class jd.hd.hd_shop_sdk.** {*;}
+-keep class jd.hd.seller.hd_shop_sdk.app.entity.** {*;}
+
