@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="请输入店铺ID"
-        android:text="10877803" />
+        android:text="10660167" />
 
     <Button
         android:id="@+id/btnOpenShopHomePage"

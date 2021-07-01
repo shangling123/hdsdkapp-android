@@ -3,11 +3,12 @@ package jd.hd.seller.hd_shop_sdk.app.ui.login
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
-import jd.hd.hd_shop_sdk.app.R
+import jd.hd.sdk.host.app.R
 import jd.hd.hd_shop_sdk.entity.EventMessage
 import jd.hd.hd_shop_sdk.entity.EventMsgLogInfo
 import jd.hd.seller.hd_shop_sdk.app.AppConfig
@@ -40,30 +41,30 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
     }
 
     private fun isvLogin(
-        userName: String,
-        password: String,
-        isvNetworkRequestCallbackListener: NetworkRequestCallbackListener
+            userName: String,
+            password: String,
+            isvNetworkRequestCallbackListener: NetworkRequestCallbackListener
     ) {
         val client = OkHttpClient()
         var jsonObject = JSONObject()
         jsonObject.put("userName", userName)
         jsonObject.put("passport", password)
         val body: RequestBody = FormBody.create(
-            MediaType.parse("application/json"),
-            jsonObject.toString()
+                MediaType.parse("application/json"),
+                jsonObject.toString()
         )
         val request: Request = Request.Builder()
-            .url("https://mock-isv.jd.com/appShop/login")
-            .post(body)
-            .build()
+                .url("https://mock-isv.jd.com/appShop/login")
+                .post(body)
+                .build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             override fun onFailure(call: Call, e: IOException) {
                 if (!isDestroyed) {
                     isvNetworkRequestCallbackListener.onFailure(
-                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGIN,
-                        e.message.toString()
+                            NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGIN,
+                            e.message.toString()
                     )
                 }
             }
@@ -74,8 +75,8 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
                 if (!isDestroyed) {
                     val res = response.body()!!.string()
                     isvNetworkRequestCallbackListener.onResponse(
-                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGIN,
-                        res
+                            NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGIN,
+                            res
                     )
                 }
             }
@@ -83,9 +84,9 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
     }
 
     private fun openLogin(
-        venderId: String,
-        userName: String,
-        networkRequestCallbackListener: NetworkRequestCallbackListener
+            venderId: String,
+            userName: String,
+            networkRequestCallbackListener: NetworkRequestCallbackListener
     ) {
         val client = OkHttpClient()
         var jsonObject = JSONObject()
@@ -93,21 +94,21 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
         jsonObject.put("userName", userName)
 
         val body: RequestBody = FormBody.create(
-            MediaType.parse("application/json"),
-            jsonObject.toString()
+                MediaType.parse("application/json"),
+                jsonObject.toString()
         )
         val request: Request = Request.Builder()
-            .url("https://mock-isv.jd.com/appShop/openLogin")
-            .post(body)
-            .build()
+                .url("https://mock-isv.jd.com/appShop/openLogin")
+                .post(body)
+                .build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             override fun onFailure(call: Call, e: IOException) {
                 if (!isDestroyed) {
                     networkRequestCallbackListener.onFailure(
-                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
-                        e.message.toString()
+                            NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
+                            e.message.toString()
                     )
                 }
             }
@@ -118,8 +119,8 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
                 if (!isDestroyed) {
                     val res = response.body()!!.string()
                     networkRequestCallbackListener.onResponse(
-                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
-                        res
+                            NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
+                            res
                     )
                 }
             }
@@ -139,13 +140,13 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
                     } else {
                         runOnUiThread {
                             loading.visibility = View.GONE
+                            //自主登录失败
+                            Toast.makeText(
+                                    this,
+                                    "自主登录失败：${isvLoginEntity.msg}",
+                                    Toast.LENGTH_LONG
+                            ).show()
                         }
-                        //自主登录失败
-                        Toast.makeText(
-                            this,
-                            "自主登录失败：${isvLoginEntity.msg}",
-                            Toast.LENGTH_LONG
-                        ).show()
                     }
                 } catch (var9: JSONException) {
                     runOnUiThread {
@@ -166,12 +167,12 @@ class LoginActivity : Activity(), View.OnClickListener, NetworkRequestCallbackLi
                         openLoginEntity.cookieDTO?.cookie_value?.let { itCookieValue ->
                             if (itCookieKey.isNotEmpty() && itCookieValue.isNotEmpty()) {
                                 EventBus.getDefault()
-                                    .post(
-                                        EventMessage(
-                                            EventMessage.HD_SHOP_SDK_EVENT_MSG_TYPE_LOGIN_SUCCESS,
-                                            EventMsgLogInfo(itCookieKey, itCookieValue)
+                                        .post(
+                                                EventMessage(
+                                                        EventMessage.HD_SHOP_SDK_EVENT_MSG_TYPE_LOGIN_SUCCESS,
+                                                        EventMsgLogInfo(itCookieKey, itCookieValue)
+                                                )
                                         )
-                                    )
                             }
                         }
                     }

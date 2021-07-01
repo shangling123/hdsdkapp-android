@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jd.hd.hd_shop_sdk.app"
+    package="jd.hd.sdk.host.app"
     android:versionCode="1"
     android:versionName="1.0.0">
 
@@ -27,7 +27,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="jd.hd.hd_shop_sdk.app.provider"
+            android:authorities="jd.hd.sdk.host.app.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

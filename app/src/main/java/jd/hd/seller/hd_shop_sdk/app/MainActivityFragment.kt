@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import jd.hd.hd_shop_sdk.HdShopWebViewFragment
-import jd.hd.hd_shop_sdk.app.R
+import jd.hd.sdk.host.app.R
 import jd.hd.hd_shop_sdk.interfaces.HdSdkWebViewListener
 import kotlinx.android.synthetic.main.activity_main_fragment.*
 
@@ -51,14 +51,5 @@ class MainActivityFragment : FragmentActivity() {
         mFragment?.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun method3() {
-        Thread {
-            try {
-                //耗时操作
 
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }.start()
-    }
 }

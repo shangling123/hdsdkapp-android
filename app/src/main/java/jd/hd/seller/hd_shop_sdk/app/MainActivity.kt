@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import jd.hd.hd_shop_sdk.HdShopSdk
-import jd.hd.hd_shop_sdk.app.R.layout
 import jd.hd.hd_shop_sdk.entity.EventMessage
 import jd.hd.hd_shop_sdk.entity.EventMsgLogInfo
+import jd.hd.sdk.host.app.R
 import jd.hd.seller.hd_shop_sdk.app.entity.OpenLoginEntity
 import jd.hd.seller.hd_shop_sdk.app.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,7 +28,7 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
     var mContext: Context? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_main)
+        setContentView(R.layout.activity_main)
         EventBus.getDefault().register(this)
 
         mContext = this
@@ -76,15 +76,13 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
         when (event.type) {
             EventMessage.HD_SHOP_SDK_EVENT_MSG_TYPE_SHARE_DATA -> {
                 Toast.makeText(
-                    this,
-                    "宿主APP收到需要分享的广播，分享内容如下：\r\n ${event.message?.shareData}",
-                    Toast.LENGTH_LONG
+                        this,
+                        "宿主APP收到需要分享的广播，分享内容如下：\r\n ${event.message?.shareData}",
+                        Toast.LENGTH_LONG
                 ).show()
             }
             EventMessage.HD_SHOP_SDK_EVENT_MSG_TYPE_LOGIN -> {
                 if (rbCompletionLogin.isChecked) {
-                    //TODO 该值应该时/appShop/login 接口中返回的cookie的value，此处用于模拟宿主APP已登录状态，故硬编码
-                    AppConfig.userName = "selling-appA"
                     openLogin(AppConfig.venderId, AppConfig.userName, this)
                 } else {
                     val intent = Intent(this, LoginActivity::class.java)
@@ -92,7 +90,6 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
                 }
             }
             EventMessage.HD_SHOP_SDK_EVENT_MSG_SEL_PIC -> {
-                Toast.makeText(this, "宿主APP收到需要打开相册的通知", Toast.LENGTH_LONG).show()
                 openFileChooseProcess()
             }
         }
@@ -103,15 +100,15 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
         i.addCategory(Intent.CATEGORY_OPENABLE)
         i.type = "image/*"
         startActivityForResult(
-            Intent.createChooser(i, "test"),
-            2002
+                Intent.createChooser(i, "test"),
+                2002
         )
     }
 
     private fun openLogin(
-        venderId: String,
-        userName: String,
-        networkRequestCallbackListener: NetworkRequestCallbackListener
+            venderId: String,
+            userName: String,
+            networkRequestCallbackListener: NetworkRequestCallbackListener
     ) {
         val client = OkHttpClient()
         val jsonObject = JSONObject()
@@ -119,21 +116,21 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
         jsonObject.put("userName", userName)
 
         val body: RequestBody = FormBody.create(
-            MediaType.parse("application/json"),
-            jsonObject.toString()
+                MediaType.parse("application/json"),
+                jsonObject.toString()
         )
         val request: Request = Request.Builder()
-            .url("https://mock-isv.jd.com/appShop/openLogin")
-            .post(body)
-            .build()
+                .url("https://mock-isv.jd.com/appShop/openLogin")
+                .post(body)
+                .build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
             override fun onFailure(call: Call, e: IOException) {
                 if (!isDestroyed) {
                     networkRequestCallbackListener.onFailure(
-                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
-                        e.message.toString()
+                            NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
+                            e.message.toString()
                     )
                 }
             }
@@ -144,8 +141,8 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
                 if (!isDestroyed) {
                     val res = response.body()!!.string()
                     networkRequestCallbackListener.onResponse(
-                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
-                        res
+                            NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN,
+                            res
                     )
                 }
             }
@@ -158,19 +155,19 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
         jsonObject.put("userName", "selling-appA")
 
         val body: RequestBody = FormBody.create(
-            MediaType.parse("application/json"),
-            jsonObject.toString()
+                MediaType.parse("application/json"),
+                jsonObject.toString()
         )
         val request: Request = Request.Builder()
-            .url("https://mock-isv.jd.com/appShop/logout")
-            .post(body)
-            .build()
+                .url("https://mock-isv.jd.com/appShop/logout")
+                .post(body)
+                .build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 outNetworkRequestCallbackListener.onFailure(
-                    NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGOUT,
-                    e.message.toString()
+                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGOUT,
+                        e.message.toString()
                 )
             }
 
@@ -178,8 +175,8 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
             override fun onResponse(call: Call, response: Response) {
                 val res = response.body()!!.string()
                 outNetworkRequestCallbackListener.onResponse(
-                    NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGOUT,
-                    res
+                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_LOGOUT,
+                        res
                 )
             }
         })
@@ -191,19 +188,19 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
         jsonObject.put("sessionInfo", HdShopSdk.getSessionInfo())
 
         val body: RequestBody = FormBody.create(
-            MediaType.parse("application/json"),
-            jsonObject.toString()
+                MediaType.parse("application/json"),
+                jsonObject.toString()
         )
         val request: Request = Request.Builder()
-            .url("https://mock-isv.jd.com/appShop/openLogout")
-            .post(body)
-            .build()
+                .url("https://mock-isv.jd.com/appShop/openLogout")
+                .post(body)
+                .build()
         val call = client.newCall(request)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 outNetworkRequestCallbackListener.onFailure(
-                    NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGOUT,
-                    e.message.toString()
+                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGOUT,
+                        e.message.toString()
                 )
             }
 
@@ -211,8 +208,8 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
             override fun onResponse(call: Call, response: Response) {
                 val res = response.body()!!.string()
                 outNetworkRequestCallbackListener.onResponse(
-                    NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGOUT,
-                    res
+                        NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGOUT,
+                        res
                 )
             }
         })
@@ -226,9 +223,6 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
 
             NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGOUT -> {
                 HdShopSdk.loginOut()
-                runOnUiThread {
-                    Toast.makeText(this, "登出登录成功", Toast.LENGTH_SHORT).show()
-                }
             }
             NetworkRequestType.HD_SHOP_SDK_NETWORK_REQUEST_TYPE_ISV_OPEN_LOGIN -> {
                 try {
@@ -237,21 +231,18 @@ class MainActivity : Activity(), NetworkRequestCallbackListener {
                         openLoginEntity.cookieDTO?.cookie_value?.let { itCookieValue ->
                             if (itCookieKey.isNotEmpty() && itCookieValue.isNotEmpty()) {
                                 EventBus.getDefault()
-                                    .post(
-                                        EventMessage(
-                                            EventMessage.HD_SHOP_SDK_EVENT_MSG_TYPE_LOGIN_SUCCESS,
-                                            EventMsgLogInfo(itCookieKey, itCookieValue)
+                                        .post(
+                                                EventMessage(
+                                                        EventMessage.HD_SHOP_SDK_EVENT_MSG_TYPE_LOGIN_SUCCESS,
+                                                        EventMsgLogInfo(itCookieKey, itCookieValue)
+                                                )
                                         )
-                                    )
                             }
                         }
                     }
 
                 } catch (var9: JSONException) {
                     var9.printStackTrace()
-                }
-                runOnUiThread {
-                    Toast.makeText(this, "宿主APP静默登录成功", Toast.LENGTH_SHORT).show()
                 }
             }
         }
